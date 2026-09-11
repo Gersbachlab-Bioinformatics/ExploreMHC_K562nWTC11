@@ -1,12 +1,31 @@
 #!/usr/bin/env python3
+import argparse
+from pathlib import Path
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from pathlib import Path
-import sys
 
-src = Path(sys.argv[1])
-out = Path(sys.argv[2]) if len(sys.argv) > 2 else Path(".")
+# Inputs default to the copies alongside this script; outputs go to results/.
+
+REPO = Path(__file__).resolve().parent
+DATA = REPO / "data"
+
+
+def data_file(name):
+    """Prefer data/<name>; fall back to the repo root for the older layout."""
+    candidate = DATA / name
+    return candidate if candidate.exists() else REPO / name
+
+ap = argparse.ArgumentParser(description=__doc__)
+ap.add_argument("--summary", type=Path,
+                default=data_file("guide_exact_match_summary_trim1bp.tsv.gz"),
+                help="per-guide exact-match summary (default: %(default)s)")
+ap.add_argument("--outdir", type=Path, default=REPO / "results",
+                help="where to write tables and plots (default: %(default)s)")
+args = ap.parse_args()
+
+src, out = args.summary, args.outdir
 out.mkdir(parents=True, exist_ok=True)
 
 MHC_CHR="chr6"; MHC_START=28_000_000; MHC_END=34_000_000

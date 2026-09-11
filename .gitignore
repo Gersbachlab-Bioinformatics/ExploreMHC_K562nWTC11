@@ -1,0 +1,26 @@
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.venv/
+
+# Analysis outputs (default --outdir for both analyze_*.py scripts)
+results/
+
+# Pipeline working directories, indexes, alignments, and logs
+analysis_trim1bp/
+*.bt2
+*.bt2l
+*.sam
+*_pipeline.log
+bowtie2_error.log
+
+# All input data: the IGVF guide library, pipeline results, and the manuscript
+# result tables. Not tracked -- fetch or regenerate them, see README.
+data/
+
+# Same files if they are left at the repo root instead of under data/
+IGVFFI2404DYFG.tsv.gz
+spacers.fa
+*_exact_alignments_trim1bp.tsv.gz
+guide_exact_match_summary_trim1bp.tsv.gz
+.DS_Store
