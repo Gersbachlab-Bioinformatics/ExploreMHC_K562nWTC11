@@ -199,3 +199,14 @@ See [WTC11_FLAGGED_HITS.md](WTC11_FLAGGED_HITS.md): the 42 flagged slots represe
 ## Hifiasm lowQ audit
 
 [WTC11_LOWQ_REPORT.md](WTC11_LOWQ_REPORT.md) documents the downloaded assembly-quality BEDs and coordinate projection. No assessed missing-guide positions overlap lowQ intervals, including all three top iPSC–KRAB guides at chr6:29934071-29934293 in both haplotypes. Of 475 missing guides, 413 are assessed in both haplotypes, 49 in one, and 13 in neither. Unassessed positions are not treated as lowQ-negative. Existing match and local-coverage flags are unchanged.
+
+
+## See also: does the assembly itself reconstruct the MHC well?
+
+Everything above asks whether individual 19-nt guides find an exact match.
+A separate question is whether the underlying WTC11 hifiasm assembly
+reconstructs the MHC region as a continuous, gene-complete sequence at all.
+[WTC11_MHC_ASSEMBLY_VALIDATION_REPORT.md](WTC11_MHC_ASSEMBLY_VALIDATION_REPORT.md)
+answers that: both haplotypes assemble the MHC as one contig reaching both
+flanks of the extracted GRCh38 interval, with gaps and reduced HLA gene
+coverage concentrated in the class II DRB/DQ region.
