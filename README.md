@@ -4,15 +4,16 @@ Comparing the MHC region between the K562 and WTC11 "personalized" genomes and
 re-aligning CRISPR gRNA spacers against them, to find which GRCh38 MHC targets
 are absent from a cell line's actual haplotype.
 
-**[REPORT.md](REPORT.md) — findings from the guide-mapping analysis**: how
-cleanly each guide maps in K562 vs GRCh38, why guides go missing, and whether
-badly-mapping guides drive the manuscript's screen hits (they do not).
+## Reports
 
-**[WTC11_MHC_ASSEMBLY_VALIDATION_REPORT.md](WTC11_MHC_ASSEMBLY_VALIDATION_REPORT.md)
-— WTC11 hifiasm assembly validation**: whether each WTC11 haplotype assembles
-the MHC as one continuous, flank-to-flank contig, where the gaps are, and how
-well HLA/MHC gene content is preserved (class I clean; class II DRB/DQ
-diverges from GRCh38, as expected for the most polymorphic part of the locus).
+| Report | Covers |
+| --- | --- |
+| [REPORT.md](REPORT.md) | **K562 guide-mapping.** How cleanly each guide maps vs. GRCh38, why guides go missing, and whether badly-mapping guides drive the manuscript's screen hits (they do not). |
+| [WTC11_REPORT.md](WTC11_REPORT.md) | **WTC11 guide-mapping**, both haplotypes. 4.22% of GRCh38 MHC guide rows lack an exact match in WTC11 (vs. K562's 330), loss hotspots, the K562 comparison, and iPSC/NPC screen checks. |
+| [WTC11_FLAGGED_HITS.md](WTC11_FLAGGED_HITS.md) | Detail behind WTC11_REPORT.md's 42 flagged screen slots: every affected DHS, gene, guide, and pair. |
+| [WTC11_LOWQ_REPORT.md](WTC11_LOWQ_REPORT.md) | Whether WTC11's missing-guide positions overlap hifiasm's own flagged low-quality assembly regions (they don't). |
+| [WTC11_REFSEQ_PROXIMITY.md](WTC11_REFSEQ_PROXIMITY.md) | How many of WTC11_FLAGGED_HITS.md's flagged DHSs sit near a RefSeq TSS (8 of 17, within ±1 kb). |
+| [WTC11_MHC_ASSEMBLY_VALIDATION_REPORT.md](WTC11_MHC_ASSEMBLY_VALIDATION_REPORT.md) | **WTC11 hifiasm assembly validation** (separate from guide-mapping above): whether each haplotype assembles the MHC as one continuous, flank-to-flank contig, where the gaps are, and how well HLA/MHC gene content is preserved (class I clean; class II DRB/DQ diverges from GRCh38, as expected for the most polymorphic part of the locus). |
 
 ## Motivation
 
@@ -198,6 +199,11 @@ it. Selected files:
 **475 of 11,253 GRCh38 MHC guide rows (4.22%) lack an exact match in both
 WTC11 haplotypes**, compared with 841 using hap1 alone or 759 using hap2 alone.
 The report also covers loss hotspots, the K562 comparison, and iPSC/NPC screens.
+Three follow-up audits go deeper on specific parts of that report:
+[WTC11_FLAGGED_HITS.md](WTC11_FLAGGED_HITS.md) (the 42 flagged screen slots),
+[WTC11_LOWQ_REPORT.md](WTC11_LOWQ_REPORT.md) (checked against hifiasm's own
+lowQ regions), and [WTC11_REFSEQ_PROXIMITY.md](WTC11_REFSEQ_PROXIMITY.md)
+(flagged DHSs' distance to the nearest RefSeq TSS).
 
 Use the existing environment; no downloads or package installations are performed:
 
@@ -237,3 +243,29 @@ MHC-only slices. No exact match means absent from these supplied sequences.
 `absence_in_assembly_gap` and `hemizygous_WTC11` retain the historical schema,
 but mean low nearby guide-match coverage and single-haplotype sequence presence,
 respectively; neither establishes an assembly gap, genotype or guide activity.
+
+## WTC11: MHC assembly validation
+
+A separate question from the guide-mapping work above: does the WTC11
+**hifiasm assembly itself** actually reconstruct the MHC region well?
+[WTC11_MHC_ASSEMBLY_VALIDATION_REPORT.md](WTC11_MHC_ASSEMBLY_VALIDATION_REPORT.md)
+has the full results — in short, **both haplotypes assemble the MHC as a
+single contig reaching both flanks of the extracted GRCh38 interval**
+(97.2% / 96.8% reference-span coverage), with gaps and reduced HLA
+gene-content coverage concentrated almost entirely in the class II
+DRB/DQ region, the most structurally polymorphic part of the locus.
+
+```bash
+mamba activate mambaforge
+python analyze_mhc_continuity.py     # candidate contig, flank distances, gap table
+python plot_mhc_dotplot.py           # reference-vs-haplotype dotplot
+python analyze_mhc_gene_content.py   # per-gene footprint coverage vs. RefSeq
+```
+
+These default to the tracked `data/hap{1,2}.mhc.paf` alignments (`minimap2
+-cx asm5 --cs` of the whole-genome hifiasm assemblies against the extracted
+`data/mhc_ref.fa`, computed on the HPC — not regenerated locally) and
+`data/refseq/GCF_000001405.40-RS_2025_08_genomic.gtf.gz`, writing into
+`results/wtc11/`. See `mhc_paf_utils.py` for the shared candidate-contig and
+gap-table logic, and the report for why merged reference span (not raw PAF
+block length) is the metric that survives this region's dispersed repeats.

@@ -244,8 +244,12 @@ all three top guides hemizygous after gap filtering, but hap1 coverage there is
   and the 5.85% rate predate the hap1 alignment; the lookup's 330 supersedes its
   658. The two are not contradictory — they answer different questions — but do
   not quote them side by side.
-- **WTC11 is not analysed.** Despite the repo name, no WTC11 comparison exists
-  yet, so the iPSC and NPC screens have no host-genome mapping check at all.
+- **WTC11 is analysed separately.** See [WTC11_REPORT.md](WTC11_REPORT.md) for
+  the same guide-mapping question against both WTC11 haplotypes (iPSC/NPC
+  screens), and
+  [WTC11_MHC_ASSEMBLY_VALIDATION_REPORT.md](WTC11_MHC_ASSEMBLY_VALIDATION_REPORT.md)
+  for whether the WTC11 hifiasm assembly itself reconstructs the MHC well.
+  Neither result should be assumed to transfer to K562 or vice versa.
 
 ---
 
