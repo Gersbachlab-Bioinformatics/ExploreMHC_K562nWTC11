@@ -195,6 +195,8 @@ Reproduce with `python audit_wtc11_gap_dhs.py` in `mambaforge`. Outputs: `result
 
 See [WTC11_FLAGGED_HITS.md](WTC11_FLAGGED_HITS.md): the 42 flagged slots represent **31 unique guides, 17 DHSs, 11 genes and 20 distinct DHS–gene pairs** (27 when screens are kept separate). All 17 DHSs are labeled `enhancer` in the guide metadata; none is labeled `promoter`. This label does not independently establish distal location. The detailed report lists every DHS, affected gene and pair with all three top guides flagged.
 
+[WTC11_REFSEQ_PROXIMITY.md](WTC11_REFSEQ_PROXIMITY.md) follows up on those 17 flagged DHSs specifically: 8 of 17 (47.1%) overlap a ±1-kb window around a RefSeq TSS. The `enhancer` label alone is not a reliable substitute for this distance check.
+
 
 ## Hifiasm lowQ audit
 
